@@ -277,7 +277,7 @@ void setup() {
   Page newPage;
   newPage.Line1 = " Wlc to the amazing ";
   newPage.Line2 = "B A T T L E S H I P ";
-  newPage.Line3 = "      Game v1.0     ";
+  newPage.Line3 = "      Game v2.0     ";
   newPage.Line4 = "   by Team GREEN    ";
   dm.AddPage(newPage);
   UpdateDisplay();
