@@ -4,26 +4,13 @@ on: [push]
 
 jobs:
   build:
-
-    runs-on: greenpi
-
+    runs-on: ubuntu-latest
+    container: infinitecoding/platformio-for-ci:5.0.3
     steps:
     - uses: actions/checkout@v2
-    - name: Cache pip
-      uses: actions/cache@v2
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-    - name: Cache PlatformIO
-      uses: actions/cache@v2
-      with:
-        path: ~/.platformio
-        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-    - name: Run PlatformIO
+    - name: PlatformIO Run
       run: /home/pi/.local/bin/pio run
-    - name: Run PlatformIO Test
+    - name: PlatformIO Test
       run: /home/pi/.local/bin/pio test -e native > test.output
     - name: Convert test results
       if: always()
@@ -41,5 +28,23 @@ jobs:
     - name: Cleanup test results
       if: always()
       run: rm test.output && rm test.xml
-    - name: Run Upload
+
+  deploy:
+    runs-on: greenpi
+    needs: [build]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Cache PlatformIO
+      uses: actions/cache@v2
+      with:
+        path: ~/.platformio
+        key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
+    - name: PlatformIO Upload
       run: /home/pi/.local/bin/pio run --target upload
