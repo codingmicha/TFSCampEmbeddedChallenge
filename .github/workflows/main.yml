@@ -20,6 +20,8 @@ jobs:
       with:
         name: test-results
         path: test.xml
+    - name: List files
+      run: ls -la
     - name: Publish test results
       uses: MirrorNG/nunit-reporter@v1.0.5
       if: always()
