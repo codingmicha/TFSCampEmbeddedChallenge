@@ -5,12 +5,14 @@ from xml.sax.saxutils import escape
 
 def createXML(testData, outputfilepath):
     template_testsuites = string.Template("""<?xml version="1.0" encoding="UTF-8"?>
-<test-run>
+<test-results>
   <test-suite>
+    <results>
 ${successtestcases}
 ${failingtestcases}
+    </results>
   </test-suite>
-</test-run>""")
+</test-results>""")
 
     template_successtestcase = string.Template("""      <test-case classname="${classname}" name="${name}" result="${result}" time=""/>""")
     template_failingtestcase = string.Template("""      <test-case classname="${classname}" name="${name}" result="${result}" time="">
