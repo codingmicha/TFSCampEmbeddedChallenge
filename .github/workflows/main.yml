@@ -24,15 +24,22 @@ jobs:
     - name: Run PlatformIO
       run: /home/pi/.local/bin/pio run
     - name: Run PlatformIO Test
-      continue-on-error: true
       run: /home/pi/.local/bin/pio test -e native > test.output
     - name: Convert test results
+      if: always()
       run: python ./_deploy/TestResultsParser.py test.output test.xml
     - uses: actions/upload-artifact@v2
+      if: always()
       with:
         name: test-results
         path: test.xml
+    - uses: MirrorNG/nunit-reporter@v1.0.9
+      if: always()
+      with:
+        path: test.xml
+        access-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Cleanup test results
+      if: always()
       run: rm test.output && rm test.xml
     - name: Run Upload
       run: /home/pi/.local/bin/pio run --target upload
