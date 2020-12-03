@@ -62,4 +62,4 @@ tar xzf ./actions-runner-linux-arm-2.274.2.tar.gz
 * Firmware Flash verhindern, wenn ein Test rot war
 * CI und CD klarer trennen
 * CI vielleicht gar nicht auf dem PI ausfuehren(?)
-
+* Testergebnisse grafisch huebsch in Build Results darstellen
