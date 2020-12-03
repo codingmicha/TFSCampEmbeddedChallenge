@@ -9,9 +9,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: PlatformIO Run
-      run: /home/pi/.local/bin/pio run
+      run: pio run
     - name: PlatformIO Test
-      run: /home/pi/.local/bin/pio test -e native > test.output
+      run: pio test -e native > test.output
     - name: Convert test results
       if: always()
       run: python ./_deploy/TestResultsParser.py test.output test.xml
