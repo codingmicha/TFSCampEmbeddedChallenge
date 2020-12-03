@@ -5,19 +5,16 @@ from xml.sax.saxutils import escape
 
 def createXML(testData, outputfilepath):
     template_testsuites = string.Template("""<?xml version="1.0" encoding="UTF-8"?>
-<test-run>
-  <test-suite>
+<testsuite>
 ${successtestcases}
 ${failingtestcases}
-  </test-suite>
-</test-run>""")
+</testsuite>
+""")
 
-    template_successtestcase = string.Template("""      <test-case classname="${classname}" name="${name}" result="${result}"/>""")
-    template_failingtestcase = string.Template("""      <test-case classname="${classname}" name="${name}" result="${result}">
-        <failure>
-          <message>${message}</message>
-        </failure>
-      </test-case>""")
+    template_successtestcase = string.Template("""  <testcase classname="${classname}" name="${name}"/>""")
+    template_failingtestcase = string.Template("""  <testcase classname="${classname}" name="${name}">
+    <failure>${message}</failure>
+  </testcase>""")
 
     contents_successtestcase = [template_successtestcase.substitute(id=id, classname=classname, name=name, result=result) for (id, classname, name, result, message) in testData if result != "Failed"]
     contents_failingtestcase = [template_failingtestcase.substitute(id=id, classname=classname, name=name, result=result, message=message) for (id, classname, name, result, message) in testData if result == "Failed"]
